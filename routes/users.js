@@ -50,14 +50,21 @@ router.post('/register', function(req, res){
     .then(function(values){
 
         var queryValues = "('" + values[0] + "', '" + values[1] + "', "
-        for(var key in req.body)
-        {
-            if(key.localeCompare("Ans2") === 0)
-                queryValues += "'" + req.body[key] + "')"
-            else 
-                queryValues += "'" + req.body[key] + "', "
-        }
-        return DButilsAzure.execQuery("INSERT INTO Users (Username, UserPassword, Firstname, Lastname, City, Country, Email, Category1, Category2, Category3, Category4, QuestId1, QuestId2, Ans1, Ans2) VALUES " + queryValues)
+        var firstName = req.body["Firstname"]
+        var lastName = req.body["Lastname"]
+        var city = req.body["City"]
+        var country = req.body["Country"]
+        var email = req.body["Email"]
+        var category1 = req.body["Category1"]
+        var category2 = req.body["Category2"]
+        var category3 = req.body["Category3"]
+        var category4 = req.body["Category4"]
+        var questId1 = req.body["QuestId1"]
+        var questId2 = req.body["QuestId2"]
+        var ans1 = req.body["Ans1"]
+        var ans1 = req.body["Ans2"]
+    
+        return DButilsAzure.execQuery("INSERT INTO Users (Username, UserPassword, Firstname, Lastname, City, Country, Email, Category1, Category2, Category3, Category4, QuestId1, QuestId2, Ans1, Ans2) VALUES " + queryValues + firstName + ", " + lastName + ", " + city + ", " + country + ", " + email + ", " + category1 + ", " + category2 + ", " + category3 + ", " + category4 + ", " + questId1 + ", " + questId2 + ", " + Ans1 + ", " + Ans2 + ")")
         .then(function(result){
             res.json({
                 username: values[0],
