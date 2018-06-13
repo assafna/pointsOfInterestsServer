@@ -86,7 +86,7 @@ router.post('/retrivePassword', function(req, res){
     var username = req.body.username
     var questId = req.body.questId
     var ans = req.body.ans
-
+    console.log(req)
     DButilsAzure.execQuery("SELECT UserPassword, QuestId1, QuestId2, Ans1, Ans2 FROM Users WHERE Username='" + username + "'")
     .then(function(result){
         if(result.length === 0){
