@@ -11,13 +11,13 @@ router.use(bodyParser.json());
 router.post('/login', function(req, res){
     var username = req.body.username
     var password = req.body.password
-
+    console.log(username);
     DButilsAzure.execQuery("SELECT * FROM Users WHERE Username = '" + username + "' COLLATE SQL_Latin1_General_CP1_CS_AS AND UserPassword = '" + password + "' COLLATE SQL_Latin1_General_CP1_CS_AS")
     .then(function(result){
         if(result.length === 0){
             return res.json({
                 success: false,
-                message: "rong username or password"
+                message: "wrong username or password"
             })
         }
         var payload = {
