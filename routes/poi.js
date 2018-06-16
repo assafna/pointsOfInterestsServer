@@ -29,7 +29,6 @@ router.use('/validation', function(req, res, next){
 
 router.get('/validation/FavoritePointsOfInterest', function(req,res){
     var username = req.decode.payload.username
-
     DButilsAzure.execQuery("SELECT POI_id FROM UserFavoritePOI WHERE Username='" + username + "'")
     .then(function(result){
         if(result.length === 0){
@@ -38,7 +37,7 @@ router.get('/validation/FavoritePointsOfInterest', function(req,res){
             })
         }
         var poiIds = getStringArray(result)
-        return DButilsAzure.execQuery("SELECT POI.*, UserFavoritePOI.POI_order FROM POI INNER JOIN UserFavoritePOI ON POI.POI_id=UserFavoritePOI.POI_id WHERE UserFavoritePOI.Username='" + username + "' AND POI.POI_id IN " + poiIds)
+        return DButilsAzure.execQuery("SELECT POI.*, UserFavoritePOI.POI_order, AddDate FROM POI INNER JOIN UserFavoritePOI ON POI.POI_id=UserFavoritePOI.POI_id WHERE UserFavoritePOI.Username='" + username + "' AND POI.POI_id IN " + poiIds)
     })
     .then(getPoiWithReviews)
     .then(function(result){
@@ -74,7 +73,6 @@ router.get('/RandPopularPointsOfInterst', function(req, res){
 
 router.get('/validation/RecomendedPointsOfInterest', function(req, res){
     var username = req.decode.payload.username
-    console.log(username)
 
     DButilsAzure.execQuery("SELECT Category1, Category2, Category3, Category4  FROM Users WHERE Username='" + username + "'")
     .then(function(result){
@@ -224,9 +222,9 @@ router.put('/validation/updateFavoritePointsOfInterest', function(req, res){
 })
 
 router.post('/validation/rankPointOfInterest', function(req, res){
+    console.log("amit");
     var poiId = req.body.poiId
     var rank = parseFloat(req.body.rank)
-
     DButilsAzure.execQuery("SELECT POI_avgRank, NumOfRanks FROM POI WHERE POI_id='" + poiId +"'")
     .then(function(result){
         if(result.length === 0){
