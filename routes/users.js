@@ -115,6 +115,18 @@ router.post('/retrivePassword', function(req, res){
     })
 })
 
+router.get('/userQuestions', function(req,res){
+    var username = req.params.username;
+    DButilsAzure.execQuery("SELECT QuestId1, QuestId2 FROM Users WHERE Category='" + username + "'")
+    .then(function(result){
+        res.send(result)
+    })
+    .catch(function(err){
+        console.log(err)
+        res.send(err)
+    })
+})
+
 function genrate_userName(){
     var username = "";
     var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";

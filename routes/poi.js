@@ -176,7 +176,6 @@ router.get('/PointOfInterstInfoById/:id', function(req, res){
 router.put('/validation/updateFavoritePointsOfInterest', function(req, res){
     var username = req.decode.payload.username
     var favorisePois = req.body.poisId
-    favorisePois = favorisePois.substring(1, favorisePois.length-1).replace(/ /g,'').split(",")
 
     DButilsAzure.execQuery("SELECT POI_id, AddDate FROM UserFavoritePOI WHERE Username='" + username + "'")
     .then(function(result){
