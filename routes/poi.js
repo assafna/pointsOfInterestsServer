@@ -9,21 +9,16 @@ router.use(bodyParser.urlencoded({ extended: false }))
 router.use(bodyParser.json());
 
 router.use('/validation', function(req, res, next){
-    console.log("START****************************************************************************************"
-);
     var token  = req.body.token || req.query.token || req.headers['x-access-token']
-
     if(token){
         jwt.verify(token, secret, function(err, decoded){
             if(err){
-
                 return res.json({
                     success: false,
                     message: 'failed to authenticate token'
                 })
             }
             else{
-
                 var decoded = jwt.decode(token, {complete: true})
                 req.decode = decoded
                 next()
@@ -85,15 +80,11 @@ router.get('/RandPopularPointsOfInterst', function(req, res){
 
 router.get('/validation/RecomendedPointsOfInterest', function(req, res){
     var username = req.decode.payload.username
-    console.log("****************************************************************************************"
-    );
-    console.log(username)
 
     DButilsAzure.execQuery("SELECT Category1, Category2, Category3, Category4  FROM Users WHERE Username='" + username + "'")
     .then(function(result){
 
         if(result.length === 0){
-            console.log("no username")
             return res.json({
                 success: false,
                 message: "username not exist"
@@ -107,7 +98,6 @@ router.get('/validation/RecomendedPointsOfInterest', function(req, res){
         if(result.Category4 != null && result.Category4.length > 0)
             categories += ", '" + result.Category4 + "'"
         categories += ")" 
-        console.log("Catego:"+categories);
         return DButilsAzure.execQuery("SELECT *  FROM POI WHERE Category IN " + categories)
     })
     .then(function(result){
