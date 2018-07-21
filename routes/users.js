@@ -116,8 +116,8 @@ router.post('/retrivePassword', function(req, res){
 })
 
 router.get('/userQuestions/:username', function(req,res){
-    var username = req.params.username;
-    DButilsAzure.execQuery("SELECT QuestId1, QuestId2 FROM Users WHERE Username='" + username + "'")
+    var userName = req.params.username;
+    DButilsAzure.execQuery("SELECT QuestId1, QuestId2 FROM Users WHERE Username='" + userName + "'")
     .then(function(result){
         res.send(result)
     })
