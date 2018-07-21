@@ -5,6 +5,8 @@ var cors = require('cors');
 app.use(cors());
 var DButilsAzure = require('./DButils');
 var jwt = require('jsonwebtoken')
+var fs = require('fs');
+var xml2js = require('xml2js');
 //var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 var users = require('./routes/users')
@@ -55,3 +57,15 @@ app.get('/Questions', function(req, res){
         res.send(err)
     })
 })
+
+function retriveCountrise(){
+    var parser = new xml2js.Parser();
+    fs.readFile('./countries.xml', function(err, data) {
+        parser.parseString(data, function (err, result) {
+            for(var i=0;i<result.Countries.Country.length;i++){
+                let country = result.data.Countries.Countries[i]
+                DButilsAzure.execQuery("INSERT INTO Countries (Country_id, Country_name) VALUES ('" + country.ID + "', '" + country.NAME +"')")
+            }
+        });
+    });
+}
